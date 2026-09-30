@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CoisasEmprestadas.Models;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Microsoft.Data.SqlClient;
-using CoisasEmprestadas.Models;
 
 namespace CoisasEmprestadas.Data
 {
@@ -79,6 +79,14 @@ namespace CoisasEmprestadas.Data
                             WHERE Id = @Id";
 
                 using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@DataDevolucaoReal", dataDevolucao);
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
