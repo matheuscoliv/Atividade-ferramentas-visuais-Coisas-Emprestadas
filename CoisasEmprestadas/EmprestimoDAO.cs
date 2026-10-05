@@ -88,5 +88,31 @@ namespace CoisasEmprestadas.Data
                 }
             }
         }
+        public void Atualizar(Emprestimo e)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var sql = @"UPDATE Emprestimos
+                    SET Item = @Item,
+                        DataEmprestimo = @DataEmprestimo,
+                        NomeAmigo = @NomeAmigo,
+                        ContatoAmigo = @ContatoAmigo,
+                        DataCombinadaDevolucao = @DataCombinadaDevolucao
+                    WHERE Id = @Id";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Item", e.Item);
+                    cmd.Parameters.AddWithValue("@DataEmprestimo", e.DataEmprestimo);
+                    cmd.Parameters.AddWithValue("@NomeAmigo", e.NomeAmigo);
+                    cmd.Parameters.AddWithValue("@ContatoAmigo", (object)e.ContatoAmigo ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DataCombinadaDevolucao", e.DataCombinadaDevolucao);
+                    cmd.Parameters.AddWithValue("@Id", e.Id);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
